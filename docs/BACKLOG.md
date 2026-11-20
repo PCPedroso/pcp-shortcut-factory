@@ -6,7 +6,7 @@ Status: [ ] pendente · [~] em andamento · [x] concluída
 |-----|--------|--------|
 | T00 | Ambiente: Python, venv, ffmpeg, `pytest` com 3 testes passando (manual, dono) | [ ] |
 | T01 | Validador do esquema JSON (`esquema.py`) | [x] |
-| T02 | Utilitários de tempo `hh:mm:ss.cc` (`tempo.py`) | [ ] |
+| T02 | Utilitários de tempo `hh:mm:ss.cc` (`tempo.py`) | [x] |
 | T03 | Leitor de transcrição e tempo efetivo das falas (`transcricao.py`) | [ ] |
 | T04 | Validadores editoriais (limites, citações literais, números, recomendação, sobreposição) | [ ] |
 | T05 | Divisão em frases e detector de autopromoção/números | [ ] |
