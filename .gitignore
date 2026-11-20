@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.env
+cache/
+saidas/
+dados/
+models/
+*.mp4
+*.mkv
+*.wav
+*.mp3

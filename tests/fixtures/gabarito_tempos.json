@@ -1,0 +1,25 @@
+{
+  "video_id": "tuVNNEO-NKc",
+  "duracao_total_s": 1424.88,
+  "observacao": "Gabarito dos cortes aprovados na análise manual (tempos em segundos, margem de 1 a 3 s).",
+  "cortes": [
+    {"id": "C1", "inicio_s": 0.08,    "fim_s": 109.40,  "nota": 8, "risco": "medio"},
+    {"id": "C2", "inicio_s": 189.10,  "fim_s": 251.80,  "nota": 7, "risco": "baixo"},
+    {"id": "C3", "inicio_s": 376.60,  "fim_s": 438.40,  "nota": 7, "risco": "medio"},
+    {"id": "C4", "inicio_s": 459.20,  "fim_s": 524.50,  "nota": 6, "risco": "medio"},
+    {"id": "C5", "inicio_s": 677.00,  "fim_s": 750.60,  "nota": 6, "risco": "medio"},
+    {"id": "C6", "inicio_s": 750.80,  "fim_s": 806.40,  "nota": 6, "risco": "alto"},
+    {"id": "C7", "inicio_s": 974.90,  "fim_s": 1090.80, "nota": 8, "risco": "medio"},
+    {"id": "C8", "inicio_s": 1225.70, "fim_s": 1295.90, "nota": 9, "risco": "alto"}
+  ],
+  "autopromocao_aprox_s": [
+    {"inicio_s": 905.0,  "fim_s": 936.0,  "tipo": "pedido de inscrição"},
+    {"inicio_s": 1219.0, "fim_s": 1222.0, "tipo": "parceria/patrocínio (BTG)"},
+    {"inicio_s": 1346.0, "fim_s": 1424.88, "tipo": "divulgação de escola/curso e encerramento"}
+  ],
+  "trechos_ambiguos_evitar_s": [
+    {"inicio_s": 647.9, "fim_s": 676.2, "motivo": "capital: legenda ambígua sobre mínimo exigido"},
+    {"inicio_s": 1116.0, "fim_s": 1121.0, "motivo": "fatia do Tesouro com legenda truncada"},
+    {"inicio_s": 948.6, "fim_s": 959.4, "motivo": "provisionamento com legenda truncada"}
+  ]
+}

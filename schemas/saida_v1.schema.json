@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cortesia/saida_v1",
+  "title": "Saída da análise de cortes (schema_version 1.0)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "etapa", "video", "resumo", "cortes", "ranking",
+               "prioridade_sugerida", "alertas_gerais", "proximo_passo"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "etapa": {"enum": ["curadoria", "textos"]},
+    "video": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "idioma", "duracao_aproximada", "canal_original", "precisao_timestamps"],
+      "properties": {
+        "url": {"type": ["string", "null"]},
+        "idioma": {"type": "string"},
+        "duracao_aproximada": {"$ref": "#/$defs/tempo"},
+        "canal_original": {"type": ["string", "null"]},
+        "precisao_timestamps": {"type": "string"}
+      }
+    },
+    "resumo": {"type": "string", "minLength": 1},
+    "cortes": {"type": "array", "items": {"$ref": "#/$defs/corte"}},
+    "ranking": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["posicao", "id", "ponderacao"],
+        "properties": {
+          "posicao": {"type": "integer", "minimum": 1},
+          "id": {"type": "string", "pattern": "^C[0-9]+$"},
+          "ponderacao": {"type": "string"}
+        }
+      }
+    },
+    "prioridade_sugerida": {"type": "string", "pattern": "^C[0-9]+$"},
+    "alertas_gerais": {"type": "array", "items": {"type": "string"}},
+    "proximo_passo": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"etapa": {"const": "curadoria"}}},
+      "then": {"properties": {"cortes": {"items": {"properties": {"textos": {"type": "null"}}}}}}
+    }
+  ],
+  "$defs": {
+    "tempo": {"type": "string", "pattern": "^[0-9]{2}:[0-5][0-9]:[0-5][0-9]\\.[0-9]{2}$"},
+    "corte": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "inicio", "fim", "duracao_segundos", "duracao_formatada", "frase_inicio",
+                   "frase_fim", "descricao", "gancho", "potencial_viralizacao", "depende_visual",
+                   "risco_contexto", "observacoes", "textos"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^C[0-9]+$"},
+        "inicio": {"$ref": "#/$defs/tempo"},
+        "fim": {"$ref": "#/$defs/tempo"},
+        "duracao_segundos": {"type": "number", "exclusiveMinimum": 0},
+        "duracao_formatada": {"$ref": "#/$defs/tempo"},
+        "frase_inicio": {"type": "string"},
+        "frase_fim": {"type": "string"},
+        "descricao": {"type": "string"},
+        "gancho": {"type": "string"},
+        "potencial_viralizacao": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nota", "justificativa"],
+          "properties": {
+            "nota": {"type": "integer", "minimum": 1, "maximum": 10},
+            "justificativa": {"type": "string"}
+          }
+        },
+        "depende_visual": {"type": "boolean"},
+        "risco_contexto": {"enum": ["baixo", "medio", "alto"]},
+        "observacoes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["tipo", "texto"],
+            "properties": {
+              "tipo": {"enum": ["contexto", "visual", "dados", "tema_sensivel", "edicao"]},
+              "texto": {"type": "string"}
+            }
+          }
+        },
+        "textos": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/textos"}]}
+      }
+    },
+    "textos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["itens_gerados", "titulos", "descricao", "textos_ancora", "enquete"],
+      "properties": {
+        "itens_gerados": {
+          "type": "array",
+          "items": {"enum": ["titulo", "descricao", "texto_ancora", "enquete"]}
+        },
+        "titulos": {
+          "oneOf": [{"type": "null"}, {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["texto", "caracteres"],
+              "properties": {
+                "texto": {"type": "string", "maxLength": 100},
+                "caracteres": {"type": "integer"}
+              }
+            }
+          }]
+        },
+        "descricao": {
+          "oneOf": [{"type": "null"}, {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["texto", "caracteres_texto", "hashtags", "credito"],
+            "properties": {
+              "texto": {"type": "string"},
+              "caracteres_texto": {"type": "integer"},
+              "hashtags": {
+                "type": "array",
+                "maxItems": 5,
+                "items": {"type": "string", "pattern": "^#[A-Za-z0-9_]+$"}
+              },
+              "credito": {"type": "string", "pattern": "^Fonte: "}
+            }
+          }]
+        },
+        "textos_ancora": {
+          "oneOf": [{"type": "null"}, {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["texto", "caracteres", "tipo"],
+              "properties": {
+                "texto": {"type": "string"},
+                "caracteres": {"type": "integer"},
+                "tipo": {"enum": ["padrao", "curto"]}
+              }
+            }
+          }]
+        },
+        "enquete": {
+          "oneOf": [{"type": "null"}, {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["texto", "caracteres", "opcoes"],
+            "properties": {
+              "texto": {"type": "string", "maxLength": 100},
+              "caracteres": {"type": "integer"},
+              "opcoes": {"const": ["Sim", "Não"]}
+            }
+          }]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "schema_version": "1.0",
+  "etapa": "textos",
+  "video": {
+    "url": null,
+    "idioma": "pt-BR",
+    "duracao_aproximada": "00:23:44.88",
+    "canal_original": "Investidor Sardinha",
+    "precisao_timestamps": "Tempos extraídos de legendas automáticas; podem variar de 1 a 3 segundos."
+  },
+  "resumo": "O apresentador (Raul, do canal Investidor Sardinha) explica a queda de lucro e o aumento da inadimplência do Banco do Brasil, avalia as causas e o plano de recomposição de capital e aplica os critérios de Benjamin Graham. Termina contando que comprou ações do banco. Tom analítico, com opinião forte, e aviso de que o vídeo tem o lado do mercado.",
+  "cortes": [
+    {
+      "id": "C1",
+      "inicio": "00:00:00.08",
+      "fim": "00:01:49.40",
+      "duracao_segundos": 109.32,
+      "duracao_formatada": "00:01:49.32",
+      "frase_inicio": "Nesse vídeo aqui, então, a gente vai tentar falar um pouquinho",
+      "frase_fim": "no pior número da série histórica aqui do Banco do Brasil, né?",
+      "descricao": "Apresenta as duas narrativas que circulam na internet e declara o lado do vídeo (mercado financeiro). Mostra a queda de 87% no lucro trimestral em dois anos.",
+      "gancho": "Em 2 anos o lucro do trimestre caiu 87%.",
+      "potencial_viralizacao": {
+        "nota": 8,
+        "justificativa": "Dado forte e disclaimer de transparência no próprio corte."
+      },
+      "depende_visual": true,
+      "risco_contexto": "medio",
+      "observacoes": [
+        {
+          "tipo": "dados",
+          "texto": "Lucro do 3T24 ilegível na legenda (\"R.5 bilhões\"); 3T25 = R$ 3,8 bi; 3T26 = R$ 1,3 bi; queda de 87%. Conferir antes de publicar."
+        },
+        {
+          "tipo": "contexto",
+          "texto": "As narrativas \"agro virou caloteiro\" e \"culpa exclusiva do governo Lula\" são de terceiros, não do apresentador. Não atribuir a ele."
+        },
+        {
+          "tipo": "contexto",
+          "texto": "O apresentador diz ser do mercado financeiro e proprietário de uma instituição financeira. Vale preservar isso."
+        },
+        {
+          "tipo": "visual",
+          "texto": "Cita a série histórica do lucro, que provavelmente aparece em gráfico na tela."
+        },
+        {
+          "tipo": "contexto",
+          "texto": "Textos: o corte fala em pior número da série desde o 1T24, não da história do banco. Título 2 é o mais direto; a opção mais segura é o título 3."
+        }
+      ],
+      "textos": {
+        "itens_gerados": [
+          "titulo",
+          "descricao",
+          "texto_ancora",
+          "enquete"
+        ],
+        "titulos": [
+          {
+            "texto": "Lucro do Banco do Brasil cai 87% em 2 anos: o que há por trás disso?",
+            "caracteres": 68
+          },
+          {
+            "texto": "Lucro do BB cai 87% em 2 anos e é o menor da série desde 2024, diz apresentador",
+            "caracteres": 79
+          },
+          {
+            "texto": "Duas narrativas sobre o Banco do Brasil: o que os números do lucro mostram?",
+            "caracteres": 75
+          }
+        ],
+        "descricao": {
+          "texto": "O lucro trimestral do Banco do Brasil caiu 87% em dois anos, segundo o apresentador, e o resultado atual é o menor da série desde o início de 2024. Antes dos números, ele deixa claro que o vídeo tem lado, o do mercado financeiro. Qual é a sua leitura? Comente e compartilhe.",
+          "caracteres_texto": 274,
+          "hashtags": [
+            "#bancodobrasil",
+            "#economia",
+            "#financas",
+            "#investimentos",
+            "#mercadofinanceiro"
+          ],
+          "credito": "Fonte: Investidor Sardinha"
+        },
+        "textos_ancora": [
+          {
+            "texto": "Em 2 anos, o lucro trimestral do Banco do Brasil caiu 87%, segundo o apresentador. Veja o que ele analisa.",
+            "caracteres": 106,
+            "tipo": "padrao"
+          },
+          {
+            "texto": "Lucro do BB cai 87% em 2 anos, diz apresentador",
+            "caracteres": 47,
+            "tipo": "curto"
+          }
+        ],
+        "enquete": {
+          "texto": "Você acompanha os resultados trimestrais do Banco do Brasil?",
+          "caracteres": 60,
+          "opcoes": [
+            "Sim",
+            "Não"
+          ]
+        }
+      }
+    },
+    {
+      "id": "C7",
+      "inicio": "00:16:14.90",
+      "fim": "00:18:10.80",
+      "duracao_segundos": 115.9,
+      "duracao_formatada": "00:01:55.90",
+      "frase_inicio": "O banco nunca esteve tão mal, né?",
+      "frase_fim": "sem saber como é que vai ser a administração.",
+      "descricao": "Compara a crise atual com 2016 e com o socorro de 1995/96 (\"situações diferentes\"). Depois aplica os critérios de Graham (6 de 7 atendidos) e ressalva que a fórmula não vale para estatal.",
+      "gancho": "O Banco do Brasil nunca esteve tão mal? E o que Benjamin Graham diria?",
+      "potencial_viralizacao": {
+        "nota": 8,
+        "justificativa": "Comparação histórica mais análise de valuation."
+      },
+      "depende_visual": true,
+      "risco_contexto": "medio",
+      "observacoes": [
+        {
+          "tipo": "contexto",
+          "texto": "O próprio corte mostra 1995/96 como pior que hoje. Não usar \"pior crise da história\" nos textos, nem equiparar 1996 a 2026."
+        },
+        {
+          "tipo": "dados",
+          "texto": "Queda de lucro de 38% (2016), prejuízo de R$ 4,2 bi (1995), socorro de R$ 7,5 bi, aumento de capital de R$ 8 bi (1996), patrimônio de R$ 190 bi, capital de 10,8% vs. mínimo de 8%, \"2.5 trilhões\" (sem unidade clara), preço máximo de Graham R$ 62/51/35 vs. ação a R$ 14,95. Datas com erro de legenda. Conferir tudo."
+        },
+        {
+          "tipo": "tema_sensivel",
+          "texto": "Análise de valuation; o corte inclui \"não é uma recomendação de compra\". Manter essa ressalva. Os contrapontos (lucro e capital em queda, risco de diluição) estão em 00:18:11–00:19:07."
+        },
+        {
+          "tipo": "visual",
+          "texto": "Critérios e preços máximos provavelmente aparecem em gráfico na tela."
+        },
+        {
+          "tipo": "tema_sensivel",
+          "texto": "Textos: título 2 é o mais direto e pode soar como indicação favorável; a opção mais segura é o título 3. Os textos não citam preços nem repetem a ressalva integral, então prefira publicar com a fala original."
+        }
+      ],
+      "textos": {
+        "itens_gerados": [
+          "titulo",
+          "descricao",
+          "texto_ancora",
+          "enquete"
+        ],
+        "titulos": [
+          {
+            "texto": "BB: crise atual é mais funda que a de 2016, mas difere de 1996, diz apresentador",
+            "caracteres": 80
+          },
+          {
+            "texto": "Banco do Brasil passa em 6 de 7 critérios de Graham, segundo o apresentador",
+            "caracteres": 75
+          },
+          {
+            "texto": "Banco do Brasil em 2026 x 1996: por que o apresentador diz que são situações diferentes",
+            "caracteres": 87
+          }
+        ],
+        "descricao": {
+          "texto": "O apresentador compara a crise atual do Banco do Brasil com 2016 e com o socorro de 1996, e diz que são situações diferentes. Depois aplica os critérios de Benjamin Graham: segundo ele, o banco atende 6 de 7. Ele ressalva que Graham não analisava estatais e que isso não é recomendação de compra. Concorda com essa leitura? Comente e compartilhe.",
+          "caracteres_texto": 346,
+          "hashtags": [
+            "#bancodobrasil",
+            "#benjamingraham",
+            "#investimentos",
+            "#bolsa",
+            "#economia"
+          ],
+          "credito": "Fonte: Investidor Sardinha"
+        },
+        "textos_ancora": [
+          {
+            "texto": "Crise do Banco do Brasil em 2026 x 1996: o apresentador diz que são situações bem diferentes. Veja a análise.",
+            "caracteres": 109,
+            "tipo": "padrao"
+          },
+          {
+            "texto": "BB 2026 x 1996: situações diferentes, diz apresentador",
+            "caracteres": 54,
+            "tipo": "curto"
+          }
+        ],
+        "enquete": {
+          "texto": "Você acha útil aplicar critérios de Graham para avaliar empresas estatais?",
+          "caracteres": 74,
+          "opcoes": [
+            "Sim",
+            "Não"
+          ]
+        }
+      }
+    },
+    {
+      "id": "C8",
+      "inicio": "00:20:25.70",
+      "fim": "00:21:35.90",
+      "duracao_segundos": 70.2,
+      "duracao_formatada": "00:01:10.20",
+      "frase_inicio": "Eu tenho pensado na questão: ah, você não tem medo?",
+      "frase_fim": "o cenário que o Banco do Brasil se encontra nesse momento.",
+      "descricao": "O apresentador diz que vai comprar ações do BB, admite que pode perder dinheiro e afirma que não está recomendando a compra. Reconhece que o cenário é desafiador.",
+      "gancho": "Talvez eu perca dinheiro pra caramba.",
+      "potencial_viralizacao": {
+        "nota": 9,
+        "justificativa": "Posição pessoal e assumida, com humor leve."
+      },
+      "depende_visual": false,
+      "risco_contexto": "alto",
+      "observacoes": [
+        {
+          "tipo": "tema_sensivel",
+          "texto": "Pode soar como indicação de compra. Nos textos, tratar como posição pessoal e opinião dele, citando \"não tô dizendo para vocês comprarem\". Sem promessa de ganho."
+        },
+        {
+          "tipo": "dados",
+          "texto": "\"10.000 ações a 14,60 75\" e \"147.000\" não batem exatamente na legenda. Conferir quantidade, preço e total."
+        },
+        {
+          "tipo": "contexto",
+          "texto": "O aviso de que ele é do mercado e dono de instituição financeira está no começo do vídeo, fora deste corte."
+        },
+        {
+          "tipo": "tema_sensivel",
+          "texto": "Textos: título 2 é o mais direto (cita a fala literal, mas destaca a compra); a opção mais segura é o título 3. Nenhum texto usa verbos de recomendação nem cita preço ou valor investido."
+        }
+      ],
+      "textos": {
+        "itens_gerados": [
+          "titulo",
+          "descricao",
+          "texto_ancora",
+          "enquete"
+        ],
+        "titulos": [
+          {
+            "texto": "Apresentador revela compra de ações do Banco do Brasil e admite risco de perda",
+            "caracteres": 78
+          },
+          {
+            "texto": "\"Talvez eu perca dinheiro\": apresentador explica por que comprou ações do BB",
+            "caracteres": 76
+          },
+          {
+            "texto": "Posição pessoal: apresentador comprou ações do BB e diz que não é recomendação",
+            "caracteres": 78
+          }
+        ],
+        "descricao": {
+          "texto": "O apresentador conta que comprou ações do Banco do Brasil, mesmo reconhecendo que o cenário é desafiador e que pode perder dinheiro. Segundo ele, é uma posição pessoal e não uma recomendação ao público. Conteúdo informativo, sem indicação de investimento. Qual é a sua opinião? Comente e compartilhe.",
+          "caracteres_texto": 300,
+          "hashtags": [
+            "#bancodobrasil",
+            "#acoes",
+            "#investimentos",
+            "#bolsa",
+            "#financas"
+          ],
+          "credito": "Fonte: Investidor Sardinha"
+        },
+        "textos_ancora": [
+          {
+            "texto": "Apresentador diz que comprou ações do Banco do Brasil, admite risco de perda e não recomenda a compra.",
+            "caracteres": 102,
+            "tipo": "padrao"
+          },
+          {
+            "texto": "Compra pessoal do apresentador, não é recomendação",
+            "caracteres": 50,
+            "tipo": "curto"
+          }
+        ],
+        "enquete": {
+          "texto": "Você já investiu em ações de empresas estatais?",
+          "caracteres": 47,
+          "opcoes": [
+            "Sim",
+            "Não"
+          ]
+        }
+      }
+    }
+  ],
+  "ranking": [
+    {
+      "posicao": 1,
+      "id": "C8",
+      "ponderacao": "Maior potencial (9), mas também o mais arriscado em contexto, por poder soar como recomendação de compra."
+    },
+    {
+      "posicao": 2,
+      "id": "C1",
+      "ponderacao": "Potencial 8, com disclaimer de transparência incluso e risco menor."
+    },
+    {
+      "posicao": 3,
+      "id": "C7",
+      "ponderacao": "Potencial 8, comparação histórica com ressalvas já presentes no corte."
+    }
+  ],
+  "prioridade_sugerida": "C1",
+  "alertas_gerais": [
+    "Link do vídeo não informado (campo url = null). Canal informado pelo usuário: Investidor Sardinha; apresentador aparece só como Raul, sem sobrenome. Confirmar.",
+    "Autopromoção excluída dos cortes: ≈ 00:15:05–00:15:36 (pedido de inscrição), ≈ 00:20:19–00:20:22 (parceria com o BTG) e ≈ 00:22:26–00:23:44 (divulgação da escola de investimentos, garantia e perguntas finais).",
+    "Trechos evitados por legenda ambígua: ≈ 00:10:48–00:11:16 (capital: \"saiu do que é exigido\"), ≈ 00:18:36–00:18:41 (fatia do Tesouro \"30 a 73%\") e ≈ 00:15:48–00:15:59 (provisionamento).",
+    "Bons trechos fora dos cortes: 00:13:59–00:15:03 (CPI e \"interesse deliberado\", insinuação, risco alto); 00:19:32–00:20:14 (privatizar no melhor momento, 41 s, com insinuação); 00:18:11–00:19:07 (contrapontos de Graham, contrapeso recomendado se C7 for publicado).",
+    "Legenda: \"2016\" costuma ser 2026 e \"2017\" provavelmente 2027. Não misturar os 87% (lucro trimestral) com os 74% (lucro anual) citados no vídeo. Conferir todos os valores numéricos.",
+    "Conteúdo perde validade rápido: declarações de 11/11, notícia da Bloomberg de 16/11 e preço da ação (R$ 14,95). Conferir se ainda estão atuais antes de publicar (data de referência: 19/11/2026).",
+    "Textos são opinião e análise atribuídas ao apresentador, sem recomendação de investimento. Em C8, não adicionar preço, quantidade ou valor investido sem conferir."
+  ],
+  "proximo_passo": null
+}
