@@ -8,7 +8,7 @@ Status: [ ] pendente · [~] em andamento · [x] concluída
 | T01  | Validador do esquema JSON (`esquema.py`) | [x] |
 | T02  | Utilitários de tempo `hh:mm:ss.cc` (`tempo.py`) | [x] |
 | T03  | Leitor de transcrição e tempo efetivo das falas (`transcricao.py`) | [x] |
-| T04a | Validadores editoriais I, sem transcrição (`validacao.py`): tempos, cortes, ranking, crédito, limites de texto, links, observações obrigatórias | [ ] |
+| T04a | Validadores editoriais I, sem transcrição (`validacao.py`): tempos, cortes, ranking, crédito, limites de texto, links, observações obrigatórias | [x] |
 | T04b | Validadores editoriais II, com transcrição: citações literais, frases de início/fim, números vs. observações "dados", termos de recomendação | [ ] |
 | T05  | UX e interface v0 "Revisor de cortes": `docs/UX.md` e protótipo (sênior), depois tela em Streamlit | [ ] |
 | T06  | Divisão em frases e detector de autopromoção/números | [ ] |
