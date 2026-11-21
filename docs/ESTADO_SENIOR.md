@@ -32,7 +32,7 @@ Streamlit exige alteração em `requirements.txt` (arquivo protegido): só com a
 ## Pendências do dono
 - Confirmar `git status --short` limpo (o ajuste de `.agents/workflows/relatorio-para-senior.md` pode estar sem commit).
 - Confirmar que o prompt editorial foi colado em `prompts/contrato_editorial.md`.
-- Decidir o nome do projeto (a pasta usa "shorcut", sem o "t").
+- Decidir o nome do projeto (a pasta usa "shortcut", sem o "t").
 - Definir a estratégia de direitos autorais (D008) antes de editar vídeos de terceiros.
 - Configurar a conta da irmã: projeto no Claude (kit-senior-continuidade) e, depois, o Antigravity.
 - Decidir se seguimos com a proposta de UI v0 antecipada.
