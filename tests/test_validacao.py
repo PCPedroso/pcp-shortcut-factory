@@ -143,7 +143,30 @@ def test_regra_07_cortes_sobrepostos():
     alvos = [p for p in problemas if p.codigo == "CORTES_SOBREPOSTOS"]
     assert len(alvos) == 1
     assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "CORTES_SOBREPOSTOS"
     assert alvos[0].caminho == "cortes[1].inicio"
+
+
+def test_regra_07_cortes_sobrepostos_maior_fim():
+    """Regra 7: C3 sobrepõe maior fim visto (C1) mesmo não sobrepondo o corte anterior C2."""
+    dados = carregar_gabarito()
+    base = dados["cortes"][0]
+    # C1: [100, 200], C2: [110, 120], C3: [150, 160]
+    c1 = montar_corte_sintetico(base, 100.0, 200.0, "C1")
+    c2 = montar_corte_sintetico(base, 110.0, 120.0, "C2")
+    c3 = montar_corte_sintetico(base, 150.0, 160.0, "C3")
+    dados["cortes"] = [c1, c2, c3]
+    problemas = validar_editorial(dados)
+    alvos_c3 = [
+        p
+        for p in problemas
+        if p.codigo == "CORTES_SOBREPOSTOS" and p.caminho == "cortes[2].inicio"
+    ]
+    assert len(alvos_c3) == 1
+    assert alvos_c3[0].gravidade == "erro"
+    assert alvos_c3[0].codigo == "CORTES_SOBREPOSTOS"
+    assert alvos_c3[0].caminho == "cortes[2].inicio"
+    assert "C1" in alvos_c3[0].mensagem
 
 
 def test_regra_08_cortes_consecutivos():
@@ -201,12 +224,42 @@ def test_regra_10_duracao_margem():
     assert not any(p.codigo == "DURACAO_MARGEM" for p in validar_editorial(dados))
 
 
-def test_regra_11_ranking_estrutura():
-    """Regra 11: RANKING_ESTRUTURA para ranking > 3, posições fora de ordem ou ids repetidos."""
+def test_regra_11_ranking_mais_de_3_itens():
+    """Regra 11: RANKING_ESTRUTURA erro quando ranking contém mais de 3 itens."""
     dados = carregar_gabarito()
-    dados["ranking"].append({"posicao": 4, "id": "C7", "ponderacao": "Extra"})
+    dados["ranking"].append({"posicao": 4, "id": "C99", "ponderacao": "Extra"})
     problemas = validar_editorial(dados)
-    assert any(p.codigo == "RANKING_ESTRUTURA" for p in problemas)
+    alvos = [p for p in problemas if p.codigo == "RANKING_ESTRUTURA"]
+    assert len(alvos) == 1
+    assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "RANKING_ESTRUTURA"
+    assert alvos[0].caminho == "ranking"
+
+
+def test_regra_11_ranking_posicoes_erradas():
+    """Regra 11: RANKING_ESTRUTURA erro para posições que não formam 1..n sem repetição."""
+    dados = carregar_gabarito()
+    dados["ranking"][1]["posicao"] = 3  # posições viram [1, 3, 3]
+    problemas = validar_editorial(dados)
+    alvos = [p for p in problemas if p.codigo == "RANKING_ESTRUTURA"]
+    assert len(alvos) >= 1
+    assert all(
+        p.gravidade == "erro" and p.codigo == "RANKING_ESTRUTURA" and p.caminho == "ranking"
+        for p in alvos
+    )
+
+
+def test_regra_11_ranking_ids_repetidos():
+    """Regra 11: RANKING_ESTRUTURA erro para identificadores repetidos no ranking."""
+    dados = carregar_gabarito()
+    dados["ranking"][1]["id"] = dados["ranking"][0]["id"]
+    problemas = validar_editorial(dados)
+    alvos = [p for p in problemas if p.codigo == "RANKING_ESTRUTURA"]
+    assert len(alvos) >= 1
+    assert any(
+        p.gravidade == "erro" and p.codigo == "RANKING_ESTRUTURA" and p.caminho == "ranking"
+        for p in alvos
+    )
 
 
 def test_regra_12_ranking_topo():
@@ -276,7 +329,9 @@ def test_regra_16_textos_itens():
     dados["cortes"][0]["textos"]["itens_gerados"].append("titulo")
     problemas = validar_editorial(dados)
     alvos = [p for p in problemas if p.codigo == "TEXTOS_ITENS"]
-    assert len(alvos) >= 1
+    assert len(alvos) == 1
+    assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "TEXTOS_ITENS"
     assert alvos[0].caminho == "cortes[0].textos.itens_gerados"
 
 
@@ -286,7 +341,9 @@ def test_regra_17_texto_titulos():
     dados["cortes"][0]["textos"]["titulos"].pop()  # ficam 2
     problemas = validar_editorial(dados)
     alvos = [p for p in problemas if p.codigo == "TEXTO_TITULOS"]
-    assert len(alvos) >= 1
+    assert len(alvos) == 1
+    assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "TEXTO_TITULOS"
     assert alvos[0].caminho == "cortes[0].textos.titulos"
 
 
@@ -296,11 +353,26 @@ def test_regra_18_texto_descricao():
     desc = dados["cortes"][0]["textos"]["descricao"]
     desc["texto"] += " #"
     desc["caracteres_texto"] = len(desc["texto"])
-    desc["hashtags"].append(desc["hashtags"][0])
     problemas = validar_editorial(dados)
     alvos = [p for p in problemas if p.codigo == "TEXTO_DESCRICAO"]
-    assert len(alvos) >= 1
+    assert len(alvos) == 1
+    assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "TEXTO_DESCRICAO"
     assert alvos[0].caminho == "cortes[0].textos.descricao"
+
+
+def test_regra_18_hashtags_casefold():
+    """Regra 18: hashtags repetidas sem diferenciar maiúsculas/minúsculas (casefold)."""
+    dados = carregar_gabarito()
+    desc = dados["cortes"][0]["textos"]["descricao"]
+    desc["hashtags"] = ["#Economia", "#economia", "#a", "#b", "#c"]
+    problemas = validar_editorial(dados)
+    alvos = [p for p in problemas if p.codigo == "TEXTO_DESCRICAO"]
+    assert len(alvos) == 1
+    assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "TEXTO_DESCRICAO"
+    assert alvos[0].caminho == "cortes[0].textos.descricao"
+    assert "hashtags" in alvos[0].mensagem
 
 
 def test_regra_19_texto_ancora():
@@ -312,7 +384,9 @@ def test_regra_19_texto_ancora():
     ancora[1]["caracteres"] = 65
     problemas = validar_editorial(dados)
     alvos = [p for p in problemas if p.codigo == "TEXTO_ANCORA"]
-    assert len(alvos) >= 1
+    assert len(alvos) == 1
+    assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "TEXTO_ANCORA"
     assert alvos[0].caminho == "cortes[0].textos.textos_ancora"
 
 
@@ -408,10 +482,10 @@ def test_multiplos_erros_mesmo_corte():
     desc["hashtags"].append(desc["hashtags"][0])
 
     problemas = validar_editorial(dados)
-    codigos = {p.codigo for p in problemas}
-    assert "TEXTO_LINK" in codigos
-    assert "TEXTO_DESCRICAO" in codigos
-    assert "OBS_DADOS" in codigos
+    tuplas = {(p.caminho, p.codigo, p.gravidade) for p in problemas}
+    assert ("cortes[0].gancho", "TEXTO_LINK", "erro") in tuplas
+    assert ("cortes[0].textos.descricao", "TEXTO_DESCRICAO", "erro") in tuplas
+    assert ("cortes[0].observacoes", "OBS_DADOS", "erro") in tuplas
 
 
 # --- Critérios 5, 6 e 7: Ordenação, Deduplicação, Esquema e Imutabilidade ---
@@ -464,7 +538,11 @@ def test_bordas_duracao_e_edicao():
     # 59.99 s: DURACAO_FAIXA
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 59.99, "C1")]
     problemas = validar_editorial(dados)
-    assert any(p.codigo == "DURACAO_FAIXA" for p in problemas)
+    alvos_59 = [p for p in problemas if p.codigo == "DURACAO_FAIXA"]
+    assert len(alvos_59) == 1
+    assert alvos_59[0].gravidade == "erro"
+    assert alvos_59[0].codigo == "DURACAO_FAIXA"
+    assert alvos_59[0].caminho == "cortes[0].duracao_segundos"
     # Com edicao: sem problema
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 59.99, "C1", com_edicao=True)]
     assert not any(p.codigo in ("DURACAO_FAIXA", "DURACAO_MARGEM") for p in validar_editorial(dados))
@@ -476,7 +554,11 @@ def test_bordas_duracao_e_edicao():
     # 175.01 s: DURACAO_MARGEM
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 175.01, "C1")]
     problemas = validar_editorial(dados)
-    assert any(p.codigo == "DURACAO_MARGEM" for p in problemas)
+    alvos_175 = [p for p in problemas if p.codigo == "DURACAO_MARGEM"]
+    assert len(alvos_175) == 1
+    assert alvos_175[0].gravidade == "erro"
+    assert alvos_175[0].codigo == "DURACAO_MARGEM"
+    assert alvos_175[0].caminho == "cortes[0].duracao_segundos"
     # Com edicao: sem problema
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 175.01, "C1", com_edicao=True)]
     assert not any(p.codigo in ("DURACAO_FAIXA", "DURACAO_MARGEM") for p in validar_editorial(dados))
@@ -484,7 +566,11 @@ def test_bordas_duracao_e_edicao():
     # 180.00 s: DURACAO_MARGEM
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 180.00, "C1")]
     problemas = validar_editorial(dados)
-    assert any(p.codigo == "DURACAO_MARGEM" for p in problemas)
+    alvos_180 = [p for p in problemas if p.codigo == "DURACAO_MARGEM"]
+    assert len(alvos_180) == 1
+    assert alvos_180[0].gravidade == "erro"
+    assert alvos_180[0].codigo == "DURACAO_MARGEM"
+    assert alvos_180[0].caminho == "cortes[0].duracao_segundos"
     # Com edicao: sem problema
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 180.00, "C1", com_edicao=True)]
     assert not any(p.codigo in ("DURACAO_FAIXA", "DURACAO_MARGEM") for p in validar_editorial(dados))
@@ -492,7 +578,11 @@ def test_bordas_duracao_e_edicao():
     # 180.01 s: DURACAO_FAIXA
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 180.01, "C1")]
     problemas = validar_editorial(dados)
-    assert any(p.codigo == "DURACAO_FAIXA" for p in problemas)
+    alvos_180_01 = [p for p in problemas if p.codigo == "DURACAO_FAIXA"]
+    assert len(alvos_180_01) == 1
+    assert alvos_180_01[0].gravidade == "erro"
+    assert alvos_180_01[0].codigo == "DURACAO_FAIXA"
+    assert alvos_180_01[0].caminho == "cortes[0].duracao_segundos"
     # Com edicao: sem problema
     dados["cortes"] = [montar_corte_sintetico(base, 0.0, 180.01, "C1", com_edicao=True)]
     assert not any(p.codigo in ("DURACAO_FAIXA", "DURACAO_MARGEM") for p in validar_editorial(dados))
@@ -514,7 +604,11 @@ def test_bordas_intervalo_cortes_consecutivos():
     c1_consec = montar_corte_sintetico(base, 80.99, 150.0, "C2")
     dados["cortes"] = [c0, c1_consec]
     problemas = validar_editorial(dados)
-    assert any(p.codigo == "CORTES_CONSECUTIVOS" for p in problemas)
+    alvos = [p for p in problemas if p.codigo == "CORTES_CONSECUTIVOS"]
+    assert len(alvos) == 1
+    assert alvos[0].gravidade == "erro"
+    assert alvos[0].codigo == "CORTES_CONSECUTIVOS"
+    assert alvos[0].caminho == "cortes[1]"
 
 
 # --- Testes adicionais obrigatórios solicitados pelo usuário ---
@@ -555,6 +649,9 @@ def test_textos_itens_dois_sentidos():
     p1 = validar_editorial(d1)
     alvos1 = [p for p in p1 if p.codigo == "TEXTOS_ITENS"]
     assert len(alvos1) == 1
+    assert alvos1[0].gravidade == "erro"
+    assert alvos1[0].codigo == "TEXTOS_ITENS"
+    assert alvos1[0].caminho == "cortes[0].textos.itens_gerados"
     assert "bloco 'enquete' é nulo" in alvos1[0].mensagem
 
     # Sentido 2: bloco preenchido não listado em itens_gerados
@@ -564,6 +661,9 @@ def test_textos_itens_dois_sentidos():
     p2 = validar_editorial(d2)
     alvos2 = [p for p in p2 if p.codigo == "TEXTOS_ITENS"]
     assert len(alvos2) == 1
+    assert alvos2[0].gravidade == "erro"
+    assert alvos2[0].codigo == "TEXTOS_ITENS"
+    assert alvos2[0].caminho == "cortes[0].textos.itens_gerados"
     assert "não está em itens_gerados" in alvos2[0].mensagem
 
 

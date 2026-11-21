@@ -65,6 +65,8 @@ def _validar_tempo_e_cortes(
     inicio_anterior_cent: int | None = None
     fim_anterior_cent: int | None = None
     id_anterior: str | None = None
+    maior_fim_cent: int | None = None
+    id_maior_fim: str | None = None
 
     for i, corte in enumerate(cortes):
         c_id = corte.get("id", "")
@@ -127,31 +129,39 @@ def _validar_tempo_e_cortes(
             )
 
         # Relações com o corte anterior
-        if inicio_anterior_cent is not None and fim_anterior_cent is not None and id_anterior is not None:
-            # Regra 6: CORTES_ORDEM
-            if inicio_cent < inicio_anterior_cent:
-                problemas.append(
-                    Problema(
-                        gravidade="erro",
-                        codigo="CORTES_ORDEM",
-                        caminho=f"{caminho_corte}.inicio",
-                        mensagem=f"Corte {c_id} inicia antes do corte anterior ({id_anterior}).",
-                    )
+        # Regra 6: CORTES_ORDEM
+        if (
+            inicio_anterior_cent is not None
+            and id_anterior is not None
+            and inicio_cent < inicio_anterior_cent
+        ):
+            problemas.append(
+                Problema(
+                    gravidade="erro",
+                    codigo="CORTES_ORDEM",
+                    caminho=f"{caminho_corte}.inicio",
+                    mensagem=f"Corte {c_id} inicia antes do corte anterior ({id_anterior}).",
                 )
+            )
 
-            # Regra 7: CORTES_SOBREPOSTOS
-            if inicio_cent < fim_anterior_cent:
-                problemas.append(
-                    Problema(
-                        gravidade="erro",
-                        codigo="CORTES_SOBREPOSTOS",
-                        caminho=f"{caminho_corte}.inicio",
-                        mensagem=f"Corte {c_id} sobrepõe o corte anterior ({id_anterior}).",
-                    )
+        # Regra 7: CORTES_SOBREPOSTOS (compara início com o maior fim visto até então)
+        if (
+            maior_fim_cent is not None
+            and inicio_cent < maior_fim_cent
+            and id_maior_fim is not None
+        ):
+            problemas.append(
+                Problema(
+                    gravidade="erro",
+                    codigo="CORTES_SOBREPOSTOS",
+                    caminho=f"{caminho_corte}.inicio",
+                    mensagem=f"Corte {c_id} sobrepõe o corte {id_maior_fim}.",
                 )
+            )
 
-            # Regra 8: CORTES_CONSECUTIVOS
-            # Intervalo entre 0 e menos de 1,0 s (ou seja, 0 <= intervalo_cent < 100)
+        # Regra 8: CORTES_CONSECUTIVOS
+        # Intervalo entre 0 e menos de 1,0 s (ou seja, 0 <= intervalo_cent < 100)
+        if fim_anterior_cent is not None and id_anterior is not None:
             intervalo_cent = inicio_cent - fim_anterior_cent
             if 0 <= intervalo_cent < 100:
                 padrao_ant = rf"\b{re.escape(id_anterior)}\b"
@@ -176,6 +186,9 @@ def _validar_tempo_e_cortes(
         inicio_anterior_cent = inicio_cent
         fim_anterior_cent = fim_cent
         id_anterior = c_id
+        if maior_fim_cent is None or fim_cent > maior_fim_cent:
+            maior_fim_cent = fim_cent
+            id_maior_fim = c_id
 
     return problemas
 
@@ -520,7 +533,10 @@ def _validar_textos(saida: dict[str, Any]) -> list[Problema]:
                 )
 
             hashtags = descricao.get("hashtags", [])
-            if len(hashtags) != len(set(hashtags)):
+            hashtags_normalizadas = [
+                h.casefold() for h in hashtags if isinstance(h, str)
+            ]
+            if len(hashtags_normalizadas) != len(set(hashtags_normalizadas)):
                 problemas.append(
                     Problema(
                         gravidade="erro",
