@@ -179,6 +179,65 @@ def test_end_menor_que_start_levanta_transcricao_invalida(tmp_path: Path):
     assert "menor que start" in mensagem
 
 
+def test_start_nan_levanta_transcricao_invalida(tmp_path: Path):
+    """start = float('nan') levanta TranscricaoInvalida citando índice 0."""
+    arquivo = tmp_path / "start_nan.json"
+    dados = {
+        "selected_language_code": "pt",
+        "error": None,
+        "transcript_segments": [
+            {"start": float("nan"), "end": 2.0, "text": "nan start"}
+        ],
+    }
+    arquivo.write_text(json.dumps(dados), encoding="utf-8")
+
+    with pytest.raises(TranscricaoInvalida) as exc_info:
+        carregar_transcricao(arquivo)
+
+    mensagem = str(exc_info.value)
+    assert "índice 0" in mensagem
+
+
+def test_end_infinito_levanta_transcricao_invalida(tmp_path: Path):
+    """end = float('inf') levanta TranscricaoInvalida citando o índice."""
+    arquivo = tmp_path / "end_inf.json"
+    dados = {
+        "selected_language_code": "pt",
+        "error": None,
+        "transcript_segments": [
+            {"start": 0.0, "end": 1.0, "text": "normal"},
+            {"start": 1.0, "end": float("inf"), "text": "end infinito"},
+        ],
+    }
+    arquivo.write_text(json.dumps(dados), encoding="utf-8")
+
+    with pytest.raises(TranscricaoInvalida) as exc_info:
+        carregar_transcricao(arquivo)
+
+    mensagem = str(exc_info.value)
+    assert "índice 1" in mensagem
+
+
+def test_start_negativo_levanta_transcricao_invalida(tmp_path: Path):
+    """start = -5 levanta TranscricaoInvalida citando o índice."""
+    arquivo = tmp_path / "start_negativo.json"
+    dados = {
+        "selected_language_code": "pt",
+        "error": None,
+        "transcript_segments": [
+            {"start": 0.0, "end": 2.0, "text": "normal"},
+            {"start": -5, "end": 2.0, "text": "start negativo"},
+        ],
+    }
+    arquivo.write_text(json.dumps(dados), encoding="utf-8")
+
+    with pytest.raises(TranscricaoInvalida) as exc_info:
+        carregar_transcricao(arquivo)
+
+    mensagem = str(exc_info.value)
+    assert "índice 1" in mensagem
+
+
 def test_arquivo_inexistente_ou_malformado(tmp_path: Path):
     """Arquivo inexistente ou JSON inválido levanta TranscricaoInvalida."""
     with pytest.raises(TranscricaoInvalida, match="Falha ao ler arquivo"):

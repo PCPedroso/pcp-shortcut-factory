@@ -1,6 +1,7 @@
 """Leitor de transcrição e cálculo de tempo efetivo das falas (Tarefa T03)."""
 
 import json
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -93,6 +94,19 @@ def carregar_transcricao(caminho: Path | str) -> Transcricao:
 
         inicio = float(inicio_val)
         fim = float(fim_val)
+
+        if not math.isfinite(inicio):
+            raise TranscricaoInvalida(
+                f"Segmento no índice {i} possui start não-finito: {inicio}."
+            )
+        if not math.isfinite(fim):
+            raise TranscricaoInvalida(
+                f"Segmento no índice {i} possui end não-finito: {fim}."
+            )
+        if inicio < 0:
+            raise TranscricaoInvalida(
+                f"Segmento no índice {i} possui start negativo: {inicio}."
+            )
 
         if fim < inicio:
             raise TranscricaoInvalida(
