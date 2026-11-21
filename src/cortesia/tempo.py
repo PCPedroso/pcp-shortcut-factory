@@ -2,17 +2,22 @@
 
 """Utilitários de conversão e validação de tempo no formato hh:mm:ss.cc."""
 
+import math
 import re
 
-PADRAO_TEMPO = re.compile(r"^(\d{2}):([0-5]\d):([0-5]\d)\.(\d{2})$")
+PADRAO_TEMPO = re.compile(r"([0-9]{2}):([0-5][0-9]):([0-5][0-9])\.([0-9]{2})")
 
 
 def segundos_para_tempo(segundos: float) -> str:
     """Converte segundos em formato hh:mm:ss.cc usando aritmética inteira nos centésimos.
 
     Exemplo: 59.999 vira '00:01:00.00'.
-    Levanta ValueError se segundos for negativo.
+    Levanta ValueError se segundos for negativo, não-finito (NaN, infinito)
+    ou ultrapassar 99:59:59.99.
     """
+    if not math.isfinite(segundos):
+        raise ValueError(f"Tempo em segundos deve ser finito: {segundos}")
+
     if segundos < 0:
         raise ValueError(f"Tempo em segundos não pode ser negativo: {segundos}")
 
@@ -24,17 +29,20 @@ def segundos_para_tempo(segundos: float) -> str:
     minutos = total_minutos % 60
     horas = total_minutos // 60
 
+    if horas > 99:
+        raise ValueError(f"Tempo em segundos excede 99:59:59.99: {segundos}")
+
     return f"{horas:02d}:{minutos:02d}:{seg:02d}.{centesimos:02d}"
 
 
 def tempo_para_segundos(texto: str) -> float:
     """Converte string no formato hh:mm:ss.cc para segundos como float.
 
-    Aceita apenas o formato exato hh:mm:ss.cc com minutos e segundos entre 00 e 59.
-    Levanta ValueError para qualquer formato inválido.
+    Aceita apenas o formato exato hh:mm:ss.cc com dígitos [0-9] e minutos e segundos
+    entre 00 e 59. Levanta ValueError para qualquer formato inválido ou não-string.
     """
     try:
-        match = PADRAO_TEMPO.match(texto)
+        match = PADRAO_TEMPO.fullmatch(texto)
     except TypeError as exc:
         raise ValueError(
             f"Esperado string, recebido {type(texto).__name__}"
@@ -60,9 +68,17 @@ def duracao_confere(
 ) -> bool:
     """Verifica se a duração fim - inicio bate com duracao_segundos e duracao_formatada.
 
-    Usa tolerância de 0,01 s. Retorna False se algum formato for inválido
-    ou se os valores divergirem além da tolerância.
+    Usa tolerância de 0,01 s. Retorna False se algum formato for inválido,
+    se duracao_segundos não for número finito ou se os valores divergirem além da tolerância.
     """
+    if isinstance(duracao_segundos, bool) or not isinstance(
+        duracao_segundos, (int, float)
+    ):
+        return False
+
+    if not math.isfinite(duracao_segundos):
+        return False
+
     try:
         t_inicio = tempo_para_segundos(inicio)
         t_fim = tempo_para_segundos(fim)
