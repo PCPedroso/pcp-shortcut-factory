@@ -1,3 +1,5 @@
+# /tests/test_tempo.py
+
 """Testes dos utilitários de tempo hh:mm:ss.cc (Tarefa T02)."""
 
 import json

@@ -1,3 +1,5 @@
+# /src/cortesia/tempo.py
+
 """Utilitários de conversão e validação de tempo no formato hh:mm:ss.cc."""
 
 import re

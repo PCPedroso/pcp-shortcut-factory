@@ -13,7 +13,7 @@ validação por código e uso de LLM apenas onde o julgamento editorial é neces
    - **Git** em git-scm.com.
    - **ffmpeg**: no PowerShell, `winget install Gyan.FFmpeg` (feche e reabra o terminal;
      confira com `ffmpeg -version`).
-2. Coloque esta pasta no **SSD de 447 GB** (ex.: `D:\Repository\pcp-shorcut-factory`), não no de 112 GB.
+2. Coloque esta pasta no **SSD de 447 GB** (ex.: `D:\Repository\pcp-shortcut-factory`), não no de 112 GB.
 3. Abra a pasta no Antigravity (File > Open Folder).
 4. No terminal da IDE:
    ```powershell
